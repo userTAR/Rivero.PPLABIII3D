@@ -147,6 +147,14 @@ function TraerListado()
 
 function GuardarJSONLocalStorage()
 {
+    const ref = document.getElementById("txtId").value;
+    let flag = true;
+
+    const array = TraerListado();
+    array.forEach(element => {
+        if(element.id == ref)
+            flag = false;
+    });
     let id = CrearID();
     let titulo = document.getElementById("txtTitulo").value;
     let transaccion = document.querySelector('input[name="cboVenta"]:checked').value
@@ -158,13 +166,10 @@ function GuardarJSONLocalStorage()
     
     let Auto  = new Anuncio_Auto(id,titulo,transaccion,descripcion,precio,puertas,km,potencia);
     
-    /* arrayJSON["Titulo"] = document.getElementById("txtTitulo").value;
-    arrayJSON["Transaccion"] = document.querySelector('input[name="cboVenta"]:checked').value
-    arrayJSON["Descripcion"] = document.getElementById("txtDescripcion").value;
-    arrayJSON["Precio"] = document.getElementById("txtPrecio").value;
-    arrayJSON["Puertas"] = document.getElementById("txtPuertas").value;
-    arrayJSON["Km"] = document.getElementById("txtKm").value;
-    arrayJSON["Potencia"] = document.getElementById("txtPotencia").value; */
+    if(flag != false)
+    {
+        EliminarJSONLocalStorage(ref);
+    }
     
     console.log(JSON.stringify(Auto));
     localStorage.setItem(Auto.id,JSON.stringify(Auto));
@@ -179,6 +184,8 @@ function EliminarJSONLocalStorage(key)
 function LimpiarForm()
 {
     document.getElementById("formulario").reset();
+    document.getElementById("txtId").style.display = "none";
+
     document.getElementById("txtTitulo").removeAttribute("readonly");
     document.getElementById("btnCancelar").style.display = "none";
     document.getElementById("btnEliminar").style.display = "none";
